@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Assignment Tracker</title>
+  </head>
+  <body>
+    <h1>📚 Assignment Tracker System</h1>
+
+    <h3>Welcome to DevOps Project</h3>
+
+    <button onclick="loadData()">Load Backend Data</button>
+
+    <pre id="output"></pre>
+
+    <script>
+      function loadData() {
+        fetch("http://localhost:5000/api/status")
+          .then((res) => res.json())
+          .then((data) => {
+            document.getElementById("output").innerText = JSON.stringify(
+              data,
+              null,
+              2,
+            );
+          });
+      }
+    </script>
+  </body>
+</html>
+
+
