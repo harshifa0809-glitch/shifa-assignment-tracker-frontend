@@ -13,15 +13,19 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Verify Frontend Files
-        run: |
-          echo "Checking frontend files..."
-          ls -la
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
 
-      - name: Display Frontend Version
+      - name: Deploy Frontend to Amazon S3
         run: |
-          cat frontend_version.json
+          aws s3 sync . s3://${{ secrets.S3_BUCKET_NAME }} \
+            --delete \
+            --exclude ".git/*" \
+            --exclude ".github/*"
 
-      - name: Frontend Deployment Successful
-        run: |
-          echo "Frontend deployment completed successfully."
+      - name: Deployment Complete
+        run: echo "Frontend deployed successfully!"
